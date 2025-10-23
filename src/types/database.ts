@@ -11,6 +11,12 @@ export * from './database/user_security_settings';
 export * from './database/user_connected_apps';
 export * from './database/user_sessions';
 
+// Dashboard table types
+export * from './database/projects';
+export * from './database/meetings';
+export * from './database/notifications';
+export * from './database/kpi_metrics';
+
 // Main Database interface for Supabase
 export interface Database {
   public: {
@@ -44,6 +50,27 @@ export interface Database {
         Row: import('./database/user_sessions').UserSessionRow;
         Insert: import('./database/user_sessions').UserSessionInsert;
         Update: import('./database/user_sessions').UserSessionUpdate;
+      };
+      // Dashboard tables
+      projects: {
+        Row: import('./database/projects').ProjectRow;
+        Insert: import('./database/projects').ProjectInsert;
+        Update: import('./database/projects').ProjectUpdate;
+      };
+      meetings: {
+        Row: import('./database/meetings').MeetingRow;
+        Insert: import('./database/meetings').MeetingInsert;
+        Update: import('./database/meetings').MeetingUpdate;
+      };
+      notifications: {
+        Row: import('./database/notifications').NotificationRow;
+        Insert: import('./database/notifications').NotificationInsert;
+        Update: import('./database/notifications').NotificationUpdate;
+      };
+      kpi_metrics: {
+        Row: import('./database/kpi_metrics').KpiMetricRow;
+        Insert: import('./database/kpi_metrics').KpiMetricInsert;
+        Update: import('./database/kpi_metrics').KpiMetricUpdate;
       };
     };
   };

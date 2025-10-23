@@ -58,15 +58,10 @@ export default function App() {
               <Route path="/verify-email" element={<EmailVerificationPage />} />
               <Route path="/intake" element={<IntakePage />} />
               
+              {/* Public Dashboard */}
+              <Route path="/dashboard" element={<Dashboard />} />
+              
               {/* Protected routes */}
-              <Route 
-                path="/dashboard" 
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                } 
-              />
               <Route 
                 path="/projects" 
                 element={
