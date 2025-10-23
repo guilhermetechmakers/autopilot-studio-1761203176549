@@ -21,6 +21,12 @@ export * from './database/kpi_metrics';
 export * from './database/proposal_templates';
 export * from './database/proposals';
 
+// Contract system table types
+export * from './database/contract_templates';
+export * from './database/contracts';
+export * from './database/contract_versions';
+export * from './database/contract_signatures';
+
 // Main Database interface for Supabase
 export interface Database {
   public: {
@@ -86,6 +92,27 @@ export interface Database {
         Row: import('./database/proposals').ProposalRow;
         Insert: import('./database/proposals').ProposalInsert;
         Update: import('./database/proposals').ProposalUpdate;
+      };
+      // Contract system tables
+      contract_templates: {
+        Row: import('./database/contract_templates').ContractTemplateRow;
+        Insert: import('./database/contract_templates').ContractTemplateInsert;
+        Update: import('./database/contract_templates').ContractTemplateUpdate;
+      };
+      contracts: {
+        Row: import('./database/contracts').ContractRow;
+        Insert: import('./database/contracts').ContractInsert;
+        Update: import('./database/contracts').ContractUpdate;
+      };
+      contract_versions: {
+        Row: import('./database/contract_versions').ContractVersionRow;
+        Insert: import('./database/contract_versions').ContractVersionInsert;
+        Update: import('./database/contract_versions').ContractVersionUpdate;
+      };
+      contract_signatures: {
+        Row: import('./database/contract_signatures').ContractSignatureRow;
+        Insert: import('./database/contract_signatures').ContractSignatureInsert;
+        Update: import('./database/contract_signatures').ContractSignatureUpdate;
       };
     };
   };

@@ -18,6 +18,7 @@ import ProjectsPage from "@/pages/ProjectsPage";
 import ProjectDetailsPage from "@/pages/ProjectDetailsPage";
 import IntakePage from "@/pages/IntakePage";
 import ProposalsPage from "@/pages/ProposalsPage";
+import ContractsPage from "@/pages/ContractsPage";
 import TasksPage from "@/pages/TasksPage";
 import MeetingsPage from "@/pages/MeetingsPage";
 import BillingPage from "@/pages/BillingPage";
@@ -83,6 +84,14 @@ export default function App() {
                 element={
                   <ProtectedRoute>
                     <ProposalsPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/contracts" 
+                element={
+                  <ProtectedRoute>
+                    <ContractsPage />
                   </ProtectedRoute>
                 } 
               />

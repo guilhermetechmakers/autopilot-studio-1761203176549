@@ -1,0 +1,12 @@
+{
+  "migration_name": "20241220120001_create_contract_tables",
+  "created_at": "2024-12-20T12:00:01Z",
+  "description": "Create contract and template tables for E-Contract execution with digital signatures and version control",
+  "tables_created": ["contract_templates", "contracts", "contract_versions", "contract_signatures"],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS contract_signatures CASCADE; DROP TABLE IF EXISTS contract_versions CASCADE; DROP TABLE IF EXISTS contracts CASCADE; DROP TABLE IF EXISTS contract_templates CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}

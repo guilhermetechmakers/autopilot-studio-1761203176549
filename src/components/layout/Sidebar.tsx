@@ -1,4 +1,4 @@
-import { X, Home, FolderOpen, FileText, CheckSquare, Calendar, DollarSign, Settings, HelpCircle, LogOut } from "lucide-react";
+import { X, Home, FolderOpen, FileText, CheckSquare, Calendar, DollarSign, Settings, HelpCircle, LogOut, PenTool } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -11,6 +11,7 @@ const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
   { name: "Projects", href: "/projects", icon: FolderOpen },
   { name: "Proposals", href: "/proposals", icon: FileText },
+  { name: "Contracts", href: "/contracts", icon: PenTool },
   { name: "Tasks", href: "/tasks", icon: CheckSquare },
   { name: "Meetings", href: "/meetings", icon: Calendar },
   { name: "Billing", href: "/billing", icon: DollarSign },
