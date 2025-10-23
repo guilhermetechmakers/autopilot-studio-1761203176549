@@ -1,0 +1,12 @@
+{
+  "migration_name": "20241213120003_create_proposals_table",
+  "created_at": "2024-12-13T12:00:03Z",
+  "description": "Create proposals table for storing generated proposals and SoWs with negotiation tracking",
+  "tables_created": ["proposals"],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS proposals CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}

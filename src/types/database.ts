@@ -17,6 +17,10 @@ export * from './database/meetings';
 export * from './database/notifications';
 export * from './database/kpi_metrics';
 
+// Proposal system table types
+export * from './database/proposal_templates';
+export * from './database/proposals';
+
 // Main Database interface for Supabase
 export interface Database {
   public: {
@@ -71,6 +75,17 @@ export interface Database {
         Row: import('./database/kpi_metrics').KpiMetricRow;
         Insert: import('./database/kpi_metrics').KpiMetricInsert;
         Update: import('./database/kpi_metrics').KpiMetricUpdate;
+      };
+      // Proposal system tables
+      proposal_templates: {
+        Row: import('./database/proposal_templates').ProposalTemplateRow;
+        Insert: import('./database/proposal_templates').ProposalTemplateInsert;
+        Update: import('./database/proposal_templates').ProposalTemplateUpdate;
+      };
+      proposals: {
+        Row: import('./database/proposals').ProposalRow;
+        Insert: import('./database/proposals').ProposalInsert;
+        Update: import('./database/proposals').ProposalUpdate;
       };
     };
   };
