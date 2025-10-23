@@ -32,22 +32,28 @@ async function apiRequest<T>(
     throw new Error(`API Error: ${response.status}`);
   }
 
-  return response.json();
+  const data = await response.json();
+  return data as T;
 }
 
 // API utilities
 export const api = {
-  get: <T>(endpoint: string) => apiRequest<T>(endpoint),
-  post: <T>(endpoint: string, data: unknown) => 
+  get: <T>(endpoint: string): Promise<T> => apiRequest<T>(endpoint),
+  post: <T>(endpoint: string, data: unknown): Promise<T> => 
     apiRequest<T>(endpoint, {
       method: 'POST',
       body: JSON.stringify(data),
     }),
-  put: <T>(endpoint: string, data: unknown) => 
+  put: <T>(endpoint: string, data: unknown): Promise<T> => 
     apiRequest<T>(endpoint, {
       method: 'PUT',
       body: JSON.stringify(data),
     }),
-  delete: (endpoint: string) => 
-    apiRequest(endpoint, { method: 'DELETE' }),
+  patch: <T>(endpoint: string, data: unknown): Promise<T> => 
+    apiRequest<T>(endpoint, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    }),
+  delete: <T>(endpoint: string): Promise<T> => 
+    apiRequest<T>(endpoint, { method: 'DELETE' }),
 };

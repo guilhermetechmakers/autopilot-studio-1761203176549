@@ -17,6 +17,7 @@ import MeetingsPage from "@/pages/MeetingsPage";
 import BillingPage from "@/pages/BillingPage";
 import AdminPage from "@/pages/AdminPage";
 import ProfilePage from "@/pages/ProfilePage";
+import MonitoringPage from "@/pages/MonitoringPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 
 // React Query client with optimal defaults
@@ -57,6 +58,7 @@ export default function App() {
             <Route path="/meetings" element={<MeetingsPage />} />
             <Route path="/billing" element={<BillingPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/monitoring" element={<MonitoringPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             
             {/* 404 */}

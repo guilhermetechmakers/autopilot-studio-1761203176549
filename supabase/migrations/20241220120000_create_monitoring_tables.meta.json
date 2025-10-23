@@ -1,0 +1,12 @@
+{
+  "migration_name": "20241220120000_create_monitoring_tables",
+  "created_at": "2024-12-20T12:00:00Z",
+  "description": "Create comprehensive monitoring system tables for metrics, alerts, health checks, and notification channels",
+  "tables_created": ["metrics", "alert_rules", "alerts", "health_checks", "notification_channels"],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS notification_channels CASCADE; DROP TABLE IF EXISTS health_checks CASCADE; DROP TABLE IF EXISTS alerts CASCADE; DROP TABLE IF EXISTS alert_rules CASCADE; DROP TABLE IF EXISTS metrics CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}

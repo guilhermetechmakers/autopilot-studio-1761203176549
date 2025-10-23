@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Users, Settings, Shield, BarChart3, UserPlus, Key, Database } from "lucide-react";
+import { Users, Settings, Shield, BarChart3, UserPlus, Key, Database, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -62,6 +62,7 @@ export default function AdminPage() {
     { id: "users", label: "Users", icon: Users },
     { id: "settings", label: "Settings", icon: Settings },
     { id: "security", label: "Security", icon: Shield },
+    { id: "monitoring", label: "Monitoring", icon: Activity },
     { id: "analytics", label: "Analytics", icon: BarChart3 }
   ];
 
@@ -327,6 +328,94 @@ export default function AdminPage() {
                       <span className="text-sm text-text-primary">API Keys</span>
                       <Button variant="outline" size="sm">View Keys</Button>
                     </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {activeTab === "monitoring" && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Activity className="h-5 w-5 text-blue-600" />
+                      <span className="text-sm font-medium text-text-secondary">System Health</span>
+                    </div>
+                    <div className="text-2xl font-bold text-text-primary">98.5%</div>
+                    <div className="text-xs text-text-secondary">Uptime (30 days)</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-2 mb-2">
+                      <BarChart3 className="h-5 w-5 text-green-600" />
+                      <span className="text-sm font-medium text-text-secondary">Active Alerts</span>
+                    </div>
+                    <div className="text-2xl font-bold text-text-primary">3</div>
+                    <div className="text-xs text-text-secondary">2 critical, 1 warning</div>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Database className="h-5 w-5 text-purple-600" />
+                      <span className="text-sm font-medium text-text-secondary">Services</span>
+                    </div>
+                    <div className="text-2xl font-bold text-text-primary">12</div>
+                    <div className="text-xs text-text-secondary">11 healthy, 1 degraded</div>
+                  </CardContent>
+                </Card>
+              </div>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle>Performance Monitoring</CardTitle>
+                  <CardDescription>
+                    Monitor system performance, alerts, and health checks
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-4 border border-border rounded-lg">
+                      <div>
+                        <h4 className="font-medium text-text-primary">CPU Usage</h4>
+                        <p className="text-sm text-text-secondary">Current: 45% | Peak: 78%</p>
+                      </div>
+                      <div className="w-24 h-2 bg-muted rounded-full">
+                        <div className="w-1/2 h-full bg-green-500 rounded-full"></div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between p-4 border border-border rounded-lg">
+                      <div>
+                        <h4 className="font-medium text-text-primary">Memory Usage</h4>
+                        <p className="text-sm text-text-secondary">Current: 62% | Peak: 85%</p>
+                      </div>
+                      <div className="w-24 h-2 bg-muted rounded-full">
+                        <div className="w-3/5 h-full bg-yellow-500 rounded-full"></div>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between p-4 border border-border rounded-lg">
+                      <div>
+                        <h4 className="font-medium text-text-primary">Disk Usage</h4>
+                        <p className="text-sm text-text-secondary">Current: 34% | Peak: 42%</p>
+                      </div>
+                      <div className="w-24 h-2 bg-muted rounded-full">
+                        <div className="w-1/3 h-full bg-green-500 rounded-full"></div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-6 flex gap-3">
+                    <Button className="btn-primary">
+                      <Activity className="h-4 w-4 mr-2" />
+                      View Full Dashboard
+                    </Button>
+                    <Button variant="outline">
+                      <Settings className="h-4 w-4 mr-2" />
+                      Configure Alerts
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
