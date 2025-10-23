@@ -15,7 +15,7 @@ export function AppLayout({ children }: AppLayoutProps) {
       <Sidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
       
       {/* Main content */}
-      <div className="lg:pl-72">
+      <div className="lg:ml-72">
         {/* Header */}
         <Header onMenuClick={() => setSidebarOpen(true)} />
         

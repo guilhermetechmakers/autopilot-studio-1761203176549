@@ -1,0 +1,12 @@
+{
+  "migration_name": "20241220120002_create_project_workspace_tables",
+  "created_at": "2024-12-20T12:00:02Z",
+  "description": "Create tables for project workspace functionality (milestones, tasks, tickets, repositories)",
+  "tables_created": ["milestones", "tasks", "tickets", "repositories"],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS repositories CASCADE; DROP TABLE IF EXISTS tickets CASCADE; DROP TABLE IF EXISTS tasks CASCADE; DROP TABLE IF EXISTS milestones CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}

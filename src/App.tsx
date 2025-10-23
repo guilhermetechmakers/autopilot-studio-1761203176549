@@ -5,7 +5,6 @@ import { ThemeProvider } from "next-themes";
 
 // Auth
 import { AuthProvider } from "@/components/auth/AuthProvider";
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 // Pages
 import LandingPage from "@/pages/LandingPage";
@@ -16,6 +15,7 @@ import EmailVerificationPage from "@/pages/EmailVerificationPage";
 import Dashboard from "@/pages/Dashboard";
 import ProjectsPage from "@/pages/ProjectsPage";
 import ProjectDetailsPage from "@/pages/ProjectDetailsPage";
+import ProjectWorkspacePage from "@/pages/ProjectWorkspacePage";
 import IntakePage from "@/pages/IntakePage";
 import ProposalsPage from "@/pages/ProposalsPage";
 import ContractsPage from "@/pages/ContractsPage";
@@ -59,90 +59,19 @@ export default function App() {
               <Route path="/verify-email" element={<EmailVerificationPage />} />
               <Route path="/intake" element={<IntakePage />} />
               
-              {/* Public Dashboard */}
+              {/* All pages are now public */}
               <Route path="/dashboard" element={<Dashboard />} />
-              
-              {/* Protected routes */}
-              <Route 
-                path="/projects" 
-                element={
-                  <ProtectedRoute>
-                    <ProjectsPage />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/projects/:id" 
-                element={
-                  <ProtectedRoute>
-                    <ProjectDetailsPage />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/proposals" 
-                element={
-                  <ProtectedRoute>
-                    <ProposalsPage />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/contracts" 
-                element={
-                  <ProtectedRoute>
-                    <ContractsPage />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/tasks" 
-                element={
-                  <ProtectedRoute>
-                    <TasksPage />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/meetings" 
-                element={
-                  <ProtectedRoute>
-                    <MeetingsPage />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/billing" 
-                element={
-                  <ProtectedRoute>
-                    <BillingPage />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/admin" 
-                element={
-                  <ProtectedRoute>
-                    <AdminPage />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/monitoring" 
-                element={
-                  <ProtectedRoute>
-                    <MonitoringPage />
-                  </ProtectedRoute>
-                } 
-              />
-              <Route 
-                path="/profile" 
-                element={
-                  <ProtectedRoute>
-                    <ProfilePage />
-                  </ProtectedRoute>
-                } 
-              />
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/projects/:id" element={<ProjectDetailsPage />} />
+              <Route path="/workspace/:id" element={<ProjectWorkspacePage />} />
+              <Route path="/proposals" element={<ProposalsPage />} />
+              <Route path="/contracts" element={<ContractsPage />} />
+              <Route path="/tasks" element={<TasksPage />} />
+              <Route path="/meetings" element={<MeetingsPage />} />
+              <Route path="/billing" element={<BillingPage />} />
+              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/monitoring" element={<MonitoringPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
               
               {/* 404 */}
               <Route path="*" element={<NotFoundPage />} />

@@ -17,6 +17,7 @@ import {
   Edit,
   Save,
   X,
+  LogIn,
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -24,11 +25,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AppLayout } from '@/components/layout/AppLayout';
 
 import {
   useProfile,
   useUpdateProfile,
 } from '@/hooks/useProfile';
+import { useAuth } from '@/hooks/useAuth';
 
 import {
   userProfileSchema,
@@ -239,9 +242,78 @@ function Loading() {
 // =====================================================
 
 export default function ProfilePage() {
+  const { isAuthenticated } = useAuth();
   const { data: profile, isLoading: profileLoading } = useProfile();
   const updateProfile = useUpdateProfile();
   const [isEditing, setIsEditing] = useState(false);
+
+  // Show public profile view when not authenticated
+  if (!isAuthenticated) {
+    return (
+      <AppLayout>
+        <div className="max-w-4xl mx-auto">
+          {/* Page Header */}
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl font-bold text-text-primary">User Profile</h1>
+            <p className="text-text-secondary mt-2">
+              Manage your account settings and preferences.
+            </p>
+          </div>
+
+          {/* Login Prompt */}
+          <Card className="border-primary/20 bg-primary/5">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <LogIn className="h-5 w-5 text-primary" />
+                Sign In Required
+              </CardTitle>
+              <CardDescription>Access your profile settings by signing in to your account</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-sm text-text-secondary">
+                To view and manage your profile, billing information, security settings, and connected apps, 
+                please sign in to your account.
+              </p>
+              <div className="flex flex-col gap-2">
+                <Button asChild className="w-full">
+                  <a href="/login">Sign In</a>
+                </Button>
+                <Button variant="outline" asChild className="w-full">
+                  <a href="/signup">Create Account</a>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Profile Features Preview */}
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold text-text-primary mb-6">Profile Features</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { icon: User, title: "Personal Info", description: "Update your name, email, and contact details" },
+                { icon: CreditCard, title: "Billing", description: "Manage payment methods and billing contacts" },
+                { icon: Shield, title: "Security", description: "Two-factor authentication and password settings" },
+                { icon: Key, title: "API Keys", description: "Generate and manage API access keys" }
+              ].map((feature, index) => {
+                const Icon = feature.icon;
+                return (
+                  <Card key={index} className="text-center">
+                    <CardContent className="pt-6">
+                      <div className="h-12 w-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                        <Icon className="h-6 w-6 text-primary" />
+                      </div>
+                      <h3 className="font-semibold text-text-primary mb-2">{feature.title}</h3>
+                      <p className="text-sm text-text-secondary">{feature.description}</p>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -272,8 +344,8 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
+    <AppLayout>
+      <div className="mx-auto max-w-6xl">
         {/* Profile Header */}
         <ProfileHeader
           profile={profile}
@@ -362,6 +434,6 @@ export default function ProfilePage() {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+    </AppLayout>
   );
 }
