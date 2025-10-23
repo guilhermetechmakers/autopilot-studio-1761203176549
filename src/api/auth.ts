@@ -332,6 +332,36 @@ export async function signInWithProvider(provider: string): Promise<void> {
 }
 
 /**
+ * Verify email with token
+ */
+export async function verifyEmail(token: string): Promise<PasswordResetResponse> {
+  try {
+    const { error } = await supabase.auth.verifyOtp({
+      token_hash: token,
+      type: 'email',
+    });
+
+    if (error) {
+      return {
+        success: false,
+        message: 'Invalid or expired verification token. Please request a new one.',
+        error: handleAuthError(error),
+      };
+    }
+
+    return {
+      success: true,
+      message: 'Email verified successfully! You can now access your account.',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: 'Network error. Please check your connection and try again.',
+    };
+  }
+}
+
+/**
  * Listen to auth state changes
  */
 export function onAuthStateChange(callback: (event: string, session: AuthSession | null) => void) {

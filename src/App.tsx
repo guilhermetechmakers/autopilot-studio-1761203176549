@@ -12,6 +12,7 @@ import LandingPage from "@/pages/LandingPage";
 import LoginPage from "@/pages/LoginPage";
 import SignupPage from "@/pages/SignupPage";
 import PasswordResetPage from "@/pages/PasswordResetPage";
+import EmailVerificationPage from "@/pages/EmailVerificationPage";
 import Dashboard from "@/pages/Dashboard";
 import ProjectsPage from "@/pages/ProjectsPage";
 import ProjectDetailsPage from "@/pages/ProjectDetailsPage";
@@ -54,6 +55,7 @@ export default function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/reset-password" element={<PasswordResetPage />} />
+              <Route path="/verify-email" element={<EmailVerificationPage />} />
               <Route path="/intake" element={<IntakePage />} />
               
               {/* Protected routes */}
