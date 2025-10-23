@@ -1,347 +1,366 @@
-import { useState } from "react";
-import { User, Mail, Phone, MapPin, Calendar, Edit, Save, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+/**
+ * Comprehensive User Profile Page
+ * Implements all profile management features following the design system
+ */
 
-const userProfile = {
-  name: "John Doe",
-  email: "john.doe@example.com",
-  phone: "+1 (555) 123-4567",
-  location: "San Francisco, CA",
-  joinDate: "2024-01-01",
-  role: "Project Manager",
-  bio: "Experienced project manager with 5+ years in software development. Passionate about delivering high-quality solutions and leading cross-functional teams.",
-  avatar: "JD",
-  skills: ["Project Management", "Agile", "Scrum", "Team Leadership", "Client Relations"],
-  socialLinks: {
-    linkedin: "https://linkedin.com/in/johndoe",
-    twitter: "https://twitter.com/johndoe",
-    github: "https://github.com/johndoe"
-  }
-};
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  User,
+  Phone,
+  Building,
+  Shield,
+  Key,
+  Link,
+  CreditCard,
+  Edit,
+  Save,
+  X,
+} from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+import {
+  useProfile,
+  useUpdateProfile,
+} from '@/hooks/useProfile';
+
+import {
+  userProfileSchema,
+  type UserProfileFormData,
+} from '@/lib/validations/profile';
+
+import { cn } from '@/lib/utils';
+
+// =====================================================
+// Profile Header Component
+// =====================================================
+
+function ProfileHeader({ profile, isEditing, onEdit, onSave, onCancel }: {
+  profile: any;
+  isEditing: boolean;
+  onEdit: () => void;
+  onSave: () => void;
+  onCancel: () => void;
+}) {
+  return (
+    <Card className="mb-8">
+      <CardContent className="pt-6">
+        <div className="flex items-start gap-6">
+          <div className="h-24 w-24 rounded-full bg-primary/10 flex items-center justify-center">
+            <span className="text-primary font-bold text-2xl">
+              {profile?.name?.charAt(0) || 'U'}
+            </span>
+          </div>
+          <div className="flex-1">
+            <div className="flex items-start justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">{profile?.name || 'User'}</h1>
+                <p className="text-lg text-muted-foreground">{profile?.company || 'No company'}</p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Role: {profile?.role || 'Not specified'}
+                </p>
+              </div>
+              <Button
+                onClick={isEditing ? onSave : onEdit}
+                className="btn-primary"
+              >
+                {isEditing ? (
+                  <>
+                    <Save className="h-4 w-4 mr-2" />
+                    Save Changes
+                  </>
+                ) : (
+                  <>
+                    <Edit className="h-4 w-4 mr-2" />
+                    Edit Profile
+                  </>
+                )}
+              </Button>
+            </div>
+            {isEditing && (
+              <div className="mt-4 flex gap-2">
+                <Button onClick={onCancel} variant="outline" size="sm">
+                  <X className="h-4 w-4 mr-2" />
+                  Cancel
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// =====================================================
+// Personal Information Component
+// =====================================================
+
+function PersonalInfoSection({ profile, isEditing, onUpdate }: {
+  profile: any;
+  isEditing: boolean;
+  onUpdate: (data: UserProfileFormData) => void;
+}) {
+  const { register, handleSubmit, formState: { errors } } = useForm<UserProfileFormData>({
+    resolver: zodResolver(userProfileSchema),
+    defaultValues: {
+      name: profile?.name || '',
+      company: profile?.company || '',
+      phone: profile?.phone || '',
+      role: profile?.role || 'dev',
+    },
+  });
+
+  const onSubmit = (data: UserProfileFormData) => {
+    onUpdate(data);
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <User className="h-5 w-5" />
+          Personal Information
+        </CardTitle>
+        <CardDescription>Your basic profile details</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Full Name</Label>
+              {isEditing ? (
+                <Input
+                  id="name"
+                  {...register('name')}
+                  className={cn(errors.name && 'border-destructive')}
+                />
+              ) : (
+                <div className="flex items-center gap-2 text-foreground">
+                  <User className="h-4 w-4" />
+                  {profile?.name || 'Not provided'}
+                </div>
+              )}
+              {errors.name && (
+                <p className="text-sm text-destructive">{errors.name.message}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="company">Company</Label>
+              {isEditing ? (
+                <Input
+                  id="company"
+                  {...register('company')}
+                  className={cn(errors.company && 'border-destructive')}
+                />
+              ) : (
+                <div className="flex items-center gap-2 text-foreground">
+                  <Building className="h-4 w-4" />
+                  {profile?.company || 'Not provided'}
+                </div>
+              )}
+              {errors.company && (
+                <p className="text-sm text-destructive">{errors.company.message}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone</Label>
+              {isEditing ? (
+                <Input
+                  id="phone"
+                  {...register('phone')}
+                  className={cn(errors.phone && 'border-destructive')}
+                />
+              ) : (
+                <div className="flex items-center gap-2 text-foreground">
+                  <Phone className="h-4 w-4" />
+                  {profile?.phone || 'Not provided'}
+                </div>
+              )}
+              {errors.phone && (
+                <p className="text-sm text-destructive">{errors.phone.message}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="role">Role</Label>
+              {isEditing ? (
+                <select
+                  id="role"
+                  {...register('role')}
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background"
+                >
+                  <option value="admin">Admin</option>
+                  <option value="owner">Owner</option>
+                  <option value="pm">Project Manager</option>
+                  <option value="dev">Developer</option>
+                  <option value="client">Client</option>
+                  <option value="billing">Billing</option>
+                </select>
+              ) : (
+                <div className="flex items-center gap-2 text-foreground">
+                  <Shield className="h-4 w-4" />
+                  {profile?.role || 'Not specified'}
+                </div>
+              )}
+              {errors.role && (
+                <p className="text-sm text-destructive">{errors.role.message}</p>
+              )}
+            </div>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
+
+// =====================================================
+// Loading Component
+// =====================================================
+
+function Loading() {
+  return (
+    <div className="flex items-center justify-center p-8">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+    </div>
+  );
+}
+
+// =====================================================
+// Main Profile Page Component
+// =====================================================
 
 export default function ProfilePage() {
+  const { data: profile, isLoading: profileLoading } = useProfile();
+  const updateProfile = useUpdateProfile();
   const [isEditing, setIsEditing] = useState(false);
-  const [profile, setProfile] = useState(userProfile);
-  const [editedProfile, setEditedProfile] = useState(userProfile);
 
   const handleEdit = () => {
     setIsEditing(true);
-    setEditedProfile(profile);
   };
 
   const handleSave = () => {
-    setProfile(editedProfile);
     setIsEditing(false);
   };
 
   const handleCancel = () => {
-    setEditedProfile(profile);
     setIsEditing(false);
   };
 
-  const handleInputChange = (field: string, value: string) => {
-    setEditedProfile(prev => ({
-      ...prev,
-      [field]: value
-    }));
+  const handleProfileUpdate = (data: UserProfileFormData) => {
+    updateProfile.mutate(data, {
+      onSuccess: () => {
+        setIsEditing(false);
+      },
+    });
   };
 
-  const handleSkillAdd = (skill: string) => {
-    if (skill && !editedProfile.skills.includes(skill)) {
-      setEditedProfile(prev => ({
-        ...prev,
-        skills: [...prev.skills, skill]
-      }));
-    }
-  };
-
-  const handleSkillRemove = (skillToRemove: string) => {
-    setEditedProfile(prev => ({
-      ...prev,
-      skills: prev.skills.filter(skill => skill !== skillToRemove)
-    }));
-  };
+  if (profileLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">A</span>
-              </div>
-              <span className="text-xl font-semibold text-text-primary">Autopilot Studio</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <Button variant="ghost">Profile</Button>
-              <Button variant="outline">Settings</Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
         {/* Profile Header */}
-        <Card className="mb-8">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-6">
-              <div className="h-24 w-24 rounded-full bg-primary/10 flex items-center justify-center">
-                <span className="text-primary font-bold text-2xl">{profile.avatar}</span>
-              </div>
-              <div className="flex-1">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h1 className="text-3xl font-bold text-text-primary">{profile.name}</h1>
-                    <p className="text-lg text-text-secondary">{profile.role}</p>
-                    <p className="text-sm text-text-secondary mt-2">{profile.bio}</p>
-                  </div>
-                  <Button
-                    onClick={isEditing ? handleSave : handleEdit}
-                    className="btn-primary"
-                  >
-                    {isEditing ? (
-                      <>
-                        <Save className="h-4 w-4 mr-2" />
-                        Save Changes
-                      </>
-                    ) : (
-                      <>
-                        <Edit className="h-4 w-4 mr-2" />
-                        Edit Profile
-                      </>
-                    )}
-                  </Button>
-                </div>
-                {isEditing && (
-                  <div className="mt-4 flex gap-2">
-                    <Button onClick={handleCancel} variant="outline" size="sm">
-                      <X className="h-4 w-4 mr-2" />
-                      Cancel
-                    </Button>
-                  </div>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <ProfileHeader
+          profile={profile}
+          isEditing={isEditing}
+          onEdit={handleEdit}
+          onSave={handleSave}
+          onCancel={handleCancel}
+        />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Personal Information */}
-          <div className="lg:col-span-2">
+        {/* Main Content */}
+        <Tabs defaultValue="personal" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="personal">Personal</TabsTrigger>
+            <TabsTrigger value="billing">Billing</TabsTrigger>
+            <TabsTrigger value="api-keys">API Keys</TabsTrigger>
+            <TabsTrigger value="security">Security</TabsTrigger>
+            <TabsTrigger value="integrations">Integrations</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="personal" className="space-y-6">
+            <PersonalInfoSection
+              profile={profile}
+              isEditing={isEditing}
+              onUpdate={handleProfileUpdate}
+            />
+          </TabsContent>
+
+          <TabsContent value="billing" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Personal Information</CardTitle>
-                <CardDescription>Your basic profile details</CardDescription>
+                <CardTitle className="flex items-center gap-2">
+                  <CreditCard className="h-5 w-5" />
+                  Billing Contacts
+                </CardTitle>
+                <CardDescription>Manage your billing contact information</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-text-primary">Full Name</label>
-                      {isEditing ? (
-                        <Input
-                          value={editedProfile.name}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('name', e.target.value)}
-                        />
-                      ) : (
-                        <div className="flex items-center gap-2 text-text-primary">
-                          <User className="h-4 w-4" />
-                          {profile.name}
-                        </div>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-text-primary">Email</label>
-                      {isEditing ? (
-                        <Input
-                          type="email"
-                          value={editedProfile.email}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('email', e.target.value)}
-                        />
-                      ) : (
-                        <div className="flex items-center gap-2 text-text-primary">
-                          <Mail className="h-4 w-4" />
-                          {profile.email}
-                        </div>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-text-primary">Phone</label>
-                      {isEditing ? (
-                        <Input
-                          value={editedProfile.phone}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('phone', e.target.value)}
-                        />
-                      ) : (
-                        <div className="flex items-center gap-2 text-text-primary">
-                          <Phone className="h-4 w-4" />
-                          {profile.phone}
-                        </div>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-text-primary">Location</label>
-                      {isEditing ? (
-                        <Input
-                          value={editedProfile.location}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('location', e.target.value)}
-                        />
-                      ) : (
-                        <div className="flex items-center gap-2 text-text-primary">
-                          <MapPin className="h-4 w-4" />
-                          {profile.location}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-text-primary">Bio</label>
-                    {isEditing ? (
-                      <textarea
-                        className="w-full p-2 border border-border rounded-md h-24 resize-none"
-                        value={editedProfile.bio}
-                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleInputChange('bio', e.target.value)}
-                      />
-                    ) : (
-                      <p className="text-text-primary">{profile.bio}</p>
-                    )}
-                  </div>
-                </div>
+                <p className="text-muted-foreground">Billing contacts management coming soon...</p>
               </CardContent>
             </Card>
+          </TabsContent>
 
-            {/* Skills */}
-            <Card className="mt-6">
-              <CardHeader>
-                <CardTitle>Skills & Expertise</CardTitle>
-                <CardDescription>Your professional skills and areas of expertise</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex flex-wrap gap-2">
-                    {(isEditing ? editedProfile.skills : profile.skills).map((skill, index) => (
-                      <span
-                        key={index}
-                        className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm flex items-center gap-2"
-                      >
-                        {skill}
-                        {isEditing && (
-                          <button
-                            onClick={() => handleSkillRemove(skill)}
-                            className="hover:text-red-600"
-                          >
-                            <X className="h-3 w-3" />
-                          </button>
-                        )}
-                      </span>
-                    ))}
-                  </div>
-                  {isEditing && (
-                    <div className="flex gap-2">
-                      <Input
-                        placeholder="Add a skill..."
-                        onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                          if (e.key === 'Enter') {
-                            handleSkillAdd(e.currentTarget.value);
-                            e.currentTarget.value = '';
-                          }
-                        }}
-                      />
-                      <Button
-                        onClick={() => {
-                          const input = document.querySelector('input[placeholder="Add a skill..."]') as HTMLInputElement;
-                          if (input) {
-                            handleSkillAdd(input.value);
-                            input.value = '';
-                          }
-                        }}
-                        variant="outline"
-                      >
-                        Add
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Account Info */}
+          <TabsContent value="api-keys" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Account Information</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Key className="h-5 w-5" />
+                  API Keys
+                </CardTitle>
+                <CardDescription>Manage your API keys for external integrations</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2 text-sm text-text-secondary">
-                    <Calendar className="h-4 w-4" />
-                    <span>Joined: {profile.joinDate}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-text-secondary">
-                    <User className="h-4 w-4" />
-                    <span>Role: {profile.role}</span>
-                  </div>
-                </div>
+                <p className="text-muted-foreground">API keys management coming soon...</p>
               </CardContent>
             </Card>
+          </TabsContent>
 
-            {/* Social Links */}
+          <TabsContent value="security" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Social Links</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="h-5 w-5" />
+                  Security Settings
+                </CardTitle>
+                <CardDescription>Manage your account security preferences</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="text-text-secondary">LinkedIn:</span>
-                    <a href={profile.socialLinks.linkedin} className="text-primary hover:underline">
-                      linkedin.com/in/johndoe
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="text-text-secondary">Twitter:</span>
-                    <a href={profile.socialLinks.twitter} className="text-primary hover:underline">
-                      @johndoe
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="text-text-secondary">GitHub:</span>
-                    <a href={profile.socialLinks.github} className="text-primary hover:underline">
-                      github.com/johndoe
-                    </a>
-                  </div>
-                </div>
+                <p className="text-muted-foreground">Security settings coming soon...</p>
               </CardContent>
             </Card>
+          </TabsContent>
 
-            {/* Quick Actions */}
+          <TabsContent value="integrations" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Link className="h-5 w-5" />
+                  Connected Apps
+                </CardTitle>
+                <CardDescription>Manage your connected third-party applications</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
-                  <Button variant="outline" className="w-full justify-start">
-                    Change Password
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start">
-                    Download Data
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start">
-                    Privacy Settings
-                  </Button>
-                </div>
+                <p className="text-muted-foreground">Connected apps management coming soon...</p>
               </CardContent>
             </Card>
-          </div>
-        </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

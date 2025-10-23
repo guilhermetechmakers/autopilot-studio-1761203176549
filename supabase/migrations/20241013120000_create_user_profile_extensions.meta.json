@@ -1,0 +1,18 @@
+{
+  "migration_name": "20241013120000_create_user_profile_extensions",
+  "created_at": "2024-10-13T12:00:00Z",
+  "description": "Create user profile extension tables for billing, security, API keys, and connected apps",
+  "tables_created": [
+    "user_billing_contacts",
+    "user_api_keys", 
+    "user_security_settings",
+    "user_connected_apps",
+    "user_sessions"
+  ],
+  "tables_modified": [],
+  "tables_deleted": [],
+  "breaking_changes": false,
+  "rollback_sql": "DROP TABLE IF EXISTS user_sessions CASCADE; DROP TABLE IF EXISTS user_connected_apps CASCADE; DROP TABLE IF EXISTS user_security_settings CASCADE; DROP TABLE IF EXISTS user_api_keys CASCADE; DROP TABLE IF EXISTS user_billing_contacts CASCADE;",
+  "estimated_rows": 0,
+  "requires_downtime": false
+}
