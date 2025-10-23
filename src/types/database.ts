@@ -188,6 +188,38 @@ export interface Database {
           settings?: Record<string, any>;
         };
       };
+      user_profiles: {
+        Row: {
+          id: string;
+          user_id: string;
+          name: string | null;
+          company: string | null;
+          avatar_url: string | null;
+          phone: string | null;
+          role: 'admin' | 'owner' | 'pm' | 'dev' | 'client' | 'billing';
+          preferences: Record<string, any>;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          name?: string | null;
+          company?: string | null;
+          avatar_url?: string | null;
+          phone?: string | null;
+          role?: 'admin' | 'owner' | 'pm' | 'dev' | 'client' | 'billing';
+          preferences?: Record<string, any>;
+        };
+        Update: {
+          name?: string | null;
+          company?: string | null;
+          avatar_url?: string | null;
+          phone?: string | null;
+          role?: 'admin' | 'owner' | 'pm' | 'dev' | 'client' | 'billing';
+          preferences?: Record<string, any>;
+        };
+      };
     };
     Views: {
       [_ in never]: never;

@@ -14,7 +14,7 @@ class MetricsCollector {
   private metrics: MetricInsert[] = [];
   private batchSize: number = 10;
   private flushInterval: number = 30000; // 30 seconds
-  private timer: NodeJS.Timeout | null = null;
+  private timer: number | null = null;
   private tenantId: string;
 
   constructor(tenantId: string = 'current-tenant') {
@@ -506,7 +506,7 @@ export async function measureExecution<T>(
 /**
  * Debounced metric collection
  */
-const debounceCache = new Map<string, NodeJS.Timeout>();
+const debounceCache = new Map<string, number>();
 
 export function debounceMetric(
   metricName: string,

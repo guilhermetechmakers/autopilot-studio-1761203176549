@@ -3,10 +3,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "next-themes";
 
+// Auth
+import { AuthProvider } from "@/components/auth/AuthProvider";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+
 // Pages
 import LandingPage from "@/pages/LandingPage";
 import LoginPage from "@/pages/LoginPage";
 import SignupPage from "@/pages/SignupPage";
+import PasswordResetPage from "@/pages/PasswordResetPage";
 import Dashboard from "@/pages/Dashboard";
 import ProjectsPage from "@/pages/ProjectsPage";
 import ProjectDetailsPage from "@/pages/ProjectDetailsPage";
@@ -41,30 +46,103 @@ export default function App() {
         enableSystem
         disableTransitionOnChange
       >
-        <BrowserRouter>
-          <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route path="/intake" element={<IntakePage />} />
-            
-            {/* Protected routes */}
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/projects/:id" element={<ProjectDetailsPage />} />
-            <Route path="/proposals" element={<ProposalsPage />} />
-            <Route path="/tasks" element={<TasksPage />} />
-            <Route path="/meetings" element={<MeetingsPage />} />
-            <Route path="/billing" element={<BillingPage />} />
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="/monitoring" element={<MonitoringPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            
-            {/* 404 */}
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </BrowserRouter>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/reset-password" element={<PasswordResetPage />} />
+              <Route path="/intake" element={<IntakePage />} />
+              
+              {/* Protected routes */}
+              <Route 
+                path="/dashboard" 
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/projects" 
+                element={
+                  <ProtectedRoute>
+                    <ProjectsPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/projects/:id" 
+                element={
+                  <ProtectedRoute>
+                    <ProjectDetailsPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/proposals" 
+                element={
+                  <ProtectedRoute>
+                    <ProposalsPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/tasks" 
+                element={
+                  <ProtectedRoute>
+                    <TasksPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/meetings" 
+                element={
+                  <ProtectedRoute>
+                    <MeetingsPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/billing" 
+                element={
+                  <ProtectedRoute>
+                    <BillingPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin" 
+                element={
+                  <ProtectedRoute>
+                    <AdminPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/monitoring" 
+                element={
+                  <ProtectedRoute>
+                    <MonitoringPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/profile" 
+                element={
+                  <ProtectedRoute>
+                    <ProfilePage />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              {/* 404 */}
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
         <Toaster position="top-right" />
       </ThemeProvider>
     </QueryClientProvider>
